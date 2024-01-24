@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Quant - Monitoring</title>
+{% endblock %}
+
+
+{% block body %}
+<div>
+    <span>
+        You can call the API endpoint from another application using an HTTP library or module in the programming language of your choice. Below, I'll provide examples using Python's requests library, which is commonly used for making HTTP requests.
+        <br/>
+        Make sure to install the requests library in your other application by running:
+        <br/>
+        <strong>pip install requests</strong>
+    </span>
+    <br/>
+    <span>
+        Here's an example of how you might make a POST request to the /add_monitoring_log endpoint using Python and requests:
+        <br/>
+        <div>
+            <span>
+                <strong>
+                    import requests
+                    <br/>
+                    # The URL of your Flask application
+                    <br/>
+                    flask_app_url = 'https://monitoring.quantbd.com'
+                    <br/>
+                    # The data you want to send to the API endpoint
+                    <br/>
+                    data = {
+                        'broker': 'example_broker',
+                        'source': 'example_source',
+                        'json_data': '{"key": "value"}'
+                    }
+                    <br/>
+                    # Make the POST request
+                    <br/>
+                    response = requests.post(f'{flask_app_url}/add_monitoring_log', json=data)
+                    <br/>
+                    # Print the response
+                    <br/>
+                    print(response.status_code)
+                    <br/>
+                    print(response.json())
+                    <br/>
+                </strong>
+            </span>
+            <span>
+                The data dictionary should contain the values you want to send to the API endpoint.
+                This is a basic example, and you may need to adjust it based on your specific needs, including handling authentication, error checking, and additional parameters.
+                Ensure that your Flask application is running and accessible from the other application. Additionally, consider implementing appropriate security measures such as authentication and encryption, especially if the Flask application is exposed to the public internet.
+            </span>
+        </div>
+    </span>    
+</div>
+<br/><br/><br/><br/>
+<div class="container">
+    <h1>Add Monitoring Log</h1>
+    <form method="POST" action="{{ url_for('add_log') }}">
+        {{ form.csrf_token }}
+        <label for="broker">Broker:</label>
+        {{ form.broker() }}
+        <br>
+        <label for="source">Source:</label>
+        {{ form.source() }}
+        <br>
+        <label for="json_data">JSON Data:</label>
+        {{ form.json_data() }}
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

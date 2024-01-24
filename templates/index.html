@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Quant - Monitoring</title>
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+    <h1>Quant - Monitoring</h1>
+    <div>[ <a href="/add">Add New Log</a> ]</div>
+    <br/>
+    {% if logs|length < 1 %}
+        <h4>There are no Logs, create one below!</h4>
+    
+        {% else %}
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Broker</th>
+                <th>Source</th>
+                <th>JSON Data</th>
+                <th>Date Time</th>
+            </tr>
+            {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.broker }}</td>
+                    <td>{{ log.source }}</td>
+                    <td>{{ log.json_data }}</td>
+                    <td>{{ log.date_time }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

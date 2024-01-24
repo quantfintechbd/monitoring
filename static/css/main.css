@@ -1,0 +1,21 @@
+body{
+    margin: auto;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+DIV.container {
+    min-height: 20px;   
+    vertical-align: middle;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+  }
+  
+td, th {
+    border: 1px solid #999;
+    padding: 0.5rem;
+    text-align: left;
+  }

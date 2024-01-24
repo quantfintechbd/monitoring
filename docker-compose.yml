@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+    monitoring_quantbd:
+        build: .
+        image: monitoring_quantbd
+        # container_name: monitoring_quantbd
+        # command: ["python", "app.py"]
+        command: ["gunicorn", "--reload", "--workers=3","--worker-class=gevent", "--worker-connections=100", "--timeout=120", "-b", "0.0.0.0:6501", "app:app"]
+        ports:
+            - 6501-6503:6501
+        logging:
+            driver: 'syslog'
+        volumes:
+            - '.:/app'
+        deploy:
+            replicas: 3
+        restart: unless-stopped
