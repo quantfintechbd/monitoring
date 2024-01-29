@@ -16,3 +16,8 @@ services:
         deploy:
             replicas: 3
         restart: unless-stopped
+
+networks:
+    default:
+        external: False
+        name: monitoring_quantbd

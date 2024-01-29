@@ -3,7 +3,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, desc
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
@@ -37,8 +37,9 @@ class LogForm(FlaskForm):
 
 # Route to display data in a tabular format
 @app.route('/')
-def index():    
-    logs = Log.query.all()
+def index():
+    # logs = Log.query.all()
+    logs = Log.query.order_by(desc(Log.date_time)).limit(50).all()
     return render_template('index.html', logs=logs)
 
 
@@ -86,14 +87,14 @@ def get_app_secret_key():
     print(f"Secrec Key in Byte Format: {secret_key_byte}")
     secret_key_base64 = base64.b64encode(secret_key_byte).decode('utf-8')
     print(f"Secrec Key in Plain Text: {secret_key_base64}")
-    
+
     return render_template('secret_key.html', secret_key=secret_key_base64)
 
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    
+
     app.debug = False
     http_server = WSGIServer(('0.0.0.0', 6501), app)
     http_server.serve_forever()
