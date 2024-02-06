@@ -9,33 +9,55 @@
 <div class="container">
     <h1>Quant - Monitoring</h1>
     <div>[ <a href="/add">Add New Log</a> ]</div>
-    <br/>
-    {% if logs|length < 1 %}
-        <h4>There are no Logs, create one below!</h4>
-    
-        {% else %}
-        <table border="1">
+    <br/>    
+    {% if logs.items %}
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Broker</th>
+            <th>Environment</th>
+            <th>Level</th>
+            <th>Source</th>
+            <th>JSON Data</th>
+            <th>Date Time</th>
+        </tr>
+        {% for log in logs %}
             <tr>
-                <th>ID</th>
-                <th>Broker</th>
-                <th>Environment</th>
-                <th>Level</th>
-                <th>Source</th>
-                <th>JSON Data</th>
-                <th>Date Time</th>
+                <td>{{ log.id }}</td>
+                <td>{{ log.broker }}</td>
+                <td>{{ log.envr }}</td>
+                <td>{{ log.level }}</td>
+                <td>{{ log.source }}</td>
+                <td>{{ log.json_data }}</td>
+                <td>{{ log.date_time }}</td>
             </tr>
-            {% for log in logs %}
-                <tr>
-                    <td>{{ log.id }}</td>
-                    <td>{{ log.broker }}</td>
-                    <td>{{ log.envr }}</td>
-                    <td>{{ log.level }}</td>
-                    <td>{{ log.source }}</td>
-                    <td>{{ log.json_data }}</td>
-                    <td>{{ log.date_time }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% endfor %}
+    </table>
+    <br>
+    <div class="pagination">
+        <div style="font-weight: bold;">[ 
+        {% if logs.has_prev %}
+            <a href="{{ url_for('index', page=logs.prev_num) }}">Previous</a>
+        {% endif %}
+        {% for num in logs.iter_pages() %}
+            {% if num %}
+                {% if num == logs.page %}
+                    <strong>{{ num }}</strong>
+                {% else %}
+                    <a href="{{ url_for('index', page=num) }}">{{ num }}</a>
+                {% endif %}
+            {% else %}
+                <span class="ellipsis">...</span>
+            {% endif %}
+        {% endfor %}
+        {% if logs.has_next %}
+            <a href="{{ url_for('index', page=logs.next_num) }}">Next</a>
+        {% endif %}
+         ]</div>
+    </div>
+    <br>
+    {% else %}
+    <h4>There are no Logs, create one below!</h4>
     {% endif %}
 </div>
 {% endblock %}

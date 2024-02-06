@@ -6,9 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text, desc
 from models import db, Log
 from forms import LogForm
-from gevent import monkey
-monkey.patch_all()
-from gevent.pywsgi import WSGIServer
+# from gevent import monkey
+# monkey.patch_all()
+# from gevent.pywsgi import WSGIServer
 
 
 # App Initialization Section
@@ -100,8 +100,8 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
 
-    app.debug = False
-    http_server = WSGIServer(('0.0.0.0', 6501), app)
-    http_server.serve_forever()
+    # app.debug = False
+    # http_server = WSGIServer(('0.0.0.0', 6501), app)
+    # http_server.serve_forever()
 
-    # app.run(debug=True, host="0.0.0.0", port=6501)
+    app.run(debug=True, host="0.0.0.0", port=6501)
