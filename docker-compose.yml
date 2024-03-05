@@ -1,23 +1,108 @@
 version: '3.8'
 
-services:
-    monitoring_quantbd:
-        build: .
-        image: monitoring_quantbd
-        # container_name: monitoring_quantbd
-        # command: ["python", "app.py"]
-        command: ["gunicorn", "--reload", "--workers=3","--worker-class=gevent", "--worker-connections=100", "--timeout=120", "-b", "0.0.0.0:6501", "app:app"]
-        ports:
-            - 6501-6503:6501
-        logging:
-            driver: 'syslog'
-        volumes:
-            - '.:/app'
-        deploy:
-            replicas: 3
-        restart: unless-stopped
-
+# NETWORKS
 networks:
-    default:
-        external: False
-        name: monitoring_quantbd
+    monitoring-net:
+        driver: bridge
+
+# VOLUMES
+volumes:
+    dbdata:
+        driver: local
+
+services:
+
+    # PHP
+    app:
+        build:
+            context: .
+            dockerfile: .docker/php/php.dockerfile
+        image: digitalocean.com/php
+        container_name: monitoring-app
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8112:9000"
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        working_dir: /var/www/html/
+        volumes:
+            - ./www/:/var/www/html/
+            - .docker/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+        networks:
+            - monitoring-net
+
+
+    # NGNIX
+    server:
+        image: nginx:alpine
+        container_name: monitoring-server
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8111:80"
+            - "443:443"
+        volumes:
+            - ./www/:/var/www/html/
+            - .docker/nginx/conf.d/app.local.conf:/etc/nginx/conf.d/app.conf
+        networks:
+            - monitoring-net
+    
+
+    # MYSQL
+    db:
+        container_name: 'monitoring-db'
+        image: mysql:8.0.29
+        restart: unless-stopped
+        tty: true
+        command:
+            - "--default-authentication-plugin=mysql_native_password"
+            - "--innodb-buffer-pool-size=1G"
+            - "--innodb-buffer-pool-instances=2"
+        environment:
+            MYSQL_DATABASE: db_monitoring
+            MYSQL_ROOT_PASSWORD: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+            TZ: 'Asia/Dhaka'
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+            - ./data/temp:/dumbs
+            - .docker/mysql/my.cnf:/etc/mysql/my.cnf
+        ports:
+            - "8113:3306"
+        networks:
+            - monitoring-net
+
+    #PHPMYADMIN
+    phpmyadmin:
+        container_name: 'monitoring-phpmyadmin'
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db
+        ports:
+            - "8114:80"
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            MYSQL_USER: 'root'
+            PMA_ARBITRARY: 1
+        networks:
+            - monitoring-net
+
+    # # SUPERVISOR
+    # supervisor:
+    #     build:
+    #         context: .
+    #         dockerfile: .docker/supervisor/supervisor.dockerfile
+    #     container_name: monitoring-supervisor
+    #     restart: unless-stopped
+    #     ports:
+    #         - "8115:9001"
+    #     volumes:
+    #         - ./:/var/www/html
+    #         - ./data/logs:/var/log/supervisor
+    #     networks:
+    #         - monitoring-net
+    #     depends_on:
+    #         - app
