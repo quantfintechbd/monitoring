@@ -11,7 +11,7 @@
                         <span data-key="t-username"><span class="badge bg-soft-info text-info">{{ auth()->user()->username ?? null }}</span></span>
                     </div>
                   </a>
-                </li> 
+                </li>
 
                 <li>
                     <a href="{{ route('dashboard.home') }}">
@@ -30,7 +30,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         @canany(['user-list', 'user-create', 'user-update', 'user-reset-password', 'user-pretend-login'])
                             <li><a href="{{ route("dashboard.user") }}" data-key="t-user-list">Users</a></li>
-                        @endcanany 
+                        @endcanany
                         @canany(['user-session'])
                         <li><a href="{{ route("dashboard.user.session") }}" data-key="t-register">User Session</a></li>
                         @endcanany
@@ -48,29 +48,29 @@
                     <ul class="sub-menu" aria-expanded="false">
                         @canany(['module-list', 'module-create', 'module-update'])
                             <li><a href="{{ route("dashboard.role.module") }}" data-key="t-module">Modules</a></li>
-                        @endcanany  
+                        @endcanany
                         @canany(['permission-list', 'permission-create', 'permission-update'])
                             <li><a href="{{ route("dashboard.role.permission") }}" data-key="t-permission">Permissions</a></li>
-                        @endcanany  
+                        @endcanany
                         @canany(['role-list', 'role-create', 'role-update'])
                             <li><a href="{{ route("dashboard.role") }}" data-key="t-role">Roles</a></li>
-                        @endcanany  
+                        @endcanany
                     </ul>
                 </li>
                 @endcanany
- 
-                {{-- Online BO Account --}} 
-                @canany(['bo-user-list', 'bo-user-create', 'bo-user-update', 'bo-user-profile', 'bo-user-profile-edit', 'bo-account-holder', 'bo-bank-information', 'bo-authorize-information', 'bo-nominee-information', 'bo-document'])
-                <li>
-                    <a href="#" class="has-arrow">
-                        <i data-feather="briefcase"></i>
-                        <span data-key="t-bo-account">BO Accounts</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{ route("bo-account.user") }}" data-key="t-user-pending">Pending Users</a></li>
-                    </ul>
-                </li>
-                @endcanany
+
+                {{-- Online BO Account --}}
+                {{-- @canany(['bo-user-list', 'bo-user-create', 'bo-user-update', 'bo-user-profile', 'bo-user-profile-edit', 'bo-account-holder', 'bo-bank-information', 'bo-authorize-information', 'bo-nominee-information', 'bo-document'])
+                    <li>
+                        <a href="#" class="has-arrow">
+                            <i data-feather="briefcase"></i>
+                            <span data-key="t-bo-account">BO Accounts</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="{{ route("bo-account.user") }}" data-key="t-user-pending">Pending Users</a></li>
+                        </ul>
+                    </li>
+                @endcanany --}}
 
                 {{-- <li>
                     <a href="#" class="has-arrow">

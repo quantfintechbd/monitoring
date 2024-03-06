@@ -24,12 +24,12 @@
                 <span class="badge bg-soft-info text-info">{{ auth()->user()->username ?? null }}</span>
             </div>
         </div>
-        
+
         <div class="card bg-white p-3">
 
             @php
                 $ekcy = \App\Modules\Main\Services\EkycProgressbarService::status(auth()->user()->id);
-            @endphp 
+            @endphp
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-9">
@@ -39,7 +39,7 @@
 
                     <div class="col-3 mb-3">
                         <div class="float-end">
-                            <div class="btn btn-soft-info waves-effect waves-light rounded-circle disabled-custom"> 
+                            <div class="btn btn-soft-info waves-effect waves-light rounded-circle disabled-custom">
                             <i class="bx bx-user"></i>
                             </div>
                         </div>
@@ -52,12 +52,12 @@
                 <div class="progress animated-progess mb-2 bg-light">
                         <div class="progress-bar bg-info" role="progressbar" style="width: {{ $ekcy->progress ?? 0 }}%" aria-valuenow="{{ $ekcy->progress ?? 0 }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <div class="text-nowrap mb-2">
+                {{-- <div class="text-nowrap mb-2">
                     <a href="{{ route('bo-account.user.profile-edit', auth()->user()->id) }}">
                         <span class="ms-1 font-size-12 {{ ($ekcy->progress == 100) ? 'text-success' : 'text-primary' }}"><b>{{ $ekcy->next ?? null }}</b></span>
                         <span class="ms-1 text-muted font-size-13 float-end"></span>
                     </a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -71,9 +71,9 @@
                     <a href="javascript:void(0)" route="{{ route('dashboard.user.profile.edit') }}" data-toggle="dynamicModal" class="btn btn-info d-flex align-items-center font-weight-medium">
                         <i class="icon-plus pr-2"></i>
                         Edit Profile
-                    </a> 
+                    </a>
                 </div>
-            </div> 
+            </div>
             <div class="card-body">
                 <dl class="row  p-3">
                     <dt class="col-sm-3 pt-3">Username:</dt>
@@ -100,9 +100,9 @@
 
                     <dt class="col-sm-3">Roles:</dt>
                     <dd class="col-sm-9">
-                        @foreach($item->getRoleNames() as $role) 
+                        @foreach($item->getRoleNames() as $role)
                             <span class="badge bg-soft-primary text-primary">{{ $role ?? null }}</span>
-                        @endforeach    
+                        @endforeach
                     </dd>
 
                     <dt class="col-sm-3">API Token:</dt>
@@ -123,7 +123,7 @@
                     <dd class="col-sm-9">{{ dbToDateTime(auth()->user()->updated_at) }}</dd>
 
                     <dt class="col-sm-3">Verified Date:</dt>
-                    <dd class="col-sm-9">{{ dbToDateTime(auth()->user()->email_verified_at) }}</dd> 
+                    <dd class="col-sm-9">{{ dbToDateTime(auth()->user()->email_verified_at) }}</dd>
                 </dl>
             </div>
         </div>
