@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group([
-    'module'     => 'Auth', 
+    'module'     => 'Auth',
     'middleware' => ['web']
 ], function() {
     Route::get('/', 'AuthController@login');
@@ -23,10 +23,10 @@ Route::group([
 
 // after login
 Route::group([
-    'module'     => 'Auth', 
+    'module'     => 'Auth',
     'prefix'     => 'auth',
-    'middleware' => ['web', 'auth'], 
+    'middleware' => ['web', 'auth'],
     'as'         => 'auth.'
 ], function() {
-    Route::get('logout', 'AuthController@logout')->name("logout"); 
+    Route::get('logout', 'AuthController@logout')->name("logout");
 });

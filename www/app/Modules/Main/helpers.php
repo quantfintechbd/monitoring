@@ -2,7 +2,7 @@
 
 use App\Modules\Auth\Services\AuthOtpService;
 use App\Modules\Main\Services\UserService;
-use Carbon\Carbon; 
+use Carbon\Carbon;
 
 if (!function_exists('dbToDateTime')) {
     function dbToDateTime($date, $format = "F d, Y H:i:s") {
@@ -13,10 +13,25 @@ if (!function_exists('dbToDateTime')) {
             if (preg_match('/^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$/', $date)) {
                 return Carbon::createFromFormat("Y-m-d H:i:s", $date)->format($format);
             } elseif (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
-                return Carbon::createFromFormat("Y-m-d", $date)->format($format); 
+                return Carbon::createFromFormat("Y-m-d", $date)->format($format);
             }
         }
-        return $date; 
+        return $date;
+    }
+}
+
+
+if (!function_exists('dbUTCToDateTime')) {
+    function dbUTCToDateTime($utcDateTimeString, $timezone = 'Asia/Dhaka', $format = 'Y-m-d H:i:s')
+    {
+        // Parse the UTC datetime string and set the timezone to UTC
+        $utcDateTime = Carbon::parse($utcDateTimeString)->timezone('UTC');
+
+        // Convert to the desired timezone
+        $dateTimeInTimeZone = $utcDateTime->timezone($timezone);
+
+        // Format the datetime string
+        return $dateTimeInTimeZone->format($format);
     }
 }
 
@@ -24,6 +39,20 @@ if (!function_exists('dbToDateTime')) {
 if (!function_exists('dbToDate')) {
     function dbToDate($date, $format = "F d, Y") {
         return dbToDateTime($date, $format);
+    }
+}
+
+if (!function_exists('formatDateTime')) {
+    function formatDateTime($dateTimeString)
+    {
+        $dateTime = Carbon::parse($dateTimeString);
+
+        // Check if the datetime is within the current day
+        if ($dateTime->isToday()) {
+            return $dateTime->diffForHumans();
+        } else {
+            return $dateTime->toDateTimeString();
+        }
     }
 }
 
@@ -36,7 +65,7 @@ if (!function_exists('dbToTime')) {
 
 if (!function_exists('getApiToken')) {
     function getApiToken() {
-        $str = implode("", array_merge(range("0","9"), range("A","Z"))); 
+        $str = implode("", array_merge(range("0","9"), range("A","Z")));
         return substr(str_shuffle($str), 0, 4) . '-' .
             substr(str_shuffle($str), 0, 4) . '-' .
             substr(str_shuffle($str), 0, 4) . '-' .
@@ -50,16 +79,16 @@ if (!function_exists('uniqueId')) {
         return "{$prefix}". uniqid() . "{$postfix}";
     }
 }
- 
+
 if (!function_exists('mask')) {
-    function mask($str, $pattern = "*") { 
+    function mask($str, $pattern = "*") {
         $len   = strlen($str);
 		$limit = round($len/3);
-		
+
 		$start  = substr($str, 0, $limit);
 		$middle = str_repeat($pattern, $limit);
 		$end    = substr($str, ($limit*2), $len);
-		 
+
 		return $start.$middle.$end;
     }
 }
@@ -83,7 +112,7 @@ if (!function_exists('msisdn_prefix')) {
         $localMsisdn = preg_match('/(^(\+880|00880|880|0)?(1){1}[3456789]{1}(\d){8})$/', $msisdn);
         if ($localMsisdn) {
             $msisdn =  '0' . substr($msisdn, -10);
-        } 
+        }
         return substr($msisdn, 0, 3);
     }
 }
@@ -133,13 +162,13 @@ if (!function_exists('getSmsProcessingTable')) {
 if (!function_exists('readMoreLess')) {
     function readMoreLess($str, $length = 20) {
         if (strlen($str) > $length) {
-            $str = '<p style="white-space:normal;text-overflow: ellipsis;"><span>' . mb_substr($str, 0, $length) . '</span><span class="hidden-text" style="display: none">' . mb_substr($str, $length) . '</span> <a href="#" class="show-more" onclick="showMore(this); return false;">...More</a><a href="#" style="display: none" class="hidden-text" onclick="lessSms(this); return false;">Less</a></p>';
+            $str = '<p style="white-space:normal;text-overflow: ellipsis;"><span>' . mb_substr($str, 0, $length) . '</span><span class="hidden-text" style="display: none">' . mb_substr($str, $length) . '</span> <a href="#" class="show-more text-primary fw-bold" onclick="showMore(this); return false;"> ...See More</a><a href="#" style="display: none" class="hidden-text text-primary fw-bold" onclick="lessSms(this); return false;"> ...See Less</a></p>';
         }
         return $str;
     }
 }
 
- 
+
 // random string
 if (!function_exists('getRandomString')) {
     function getRandomString($length = 8) {
@@ -149,23 +178,23 @@ if (!function_exists('getRandomString')) {
         }, range(1, $length));
         $password = implode('', $randomChars);
         return $password;
-    } 
+    }
 }
 
 // random string
 if (!function_exists('getUserName')) {
     function getUserName() {
         return (new AuthOtpService)->getUserName();
-    } 
+    }
 }
 
- 
+
 if (!function_exists("createOrUpdateUserSession")) {
     function createOrUpdateUserSession($type, $pretentId = null, $guard = 'web') {
         (new UserService)->saveUserSession($type, $pretentId, $guard);
     }
 }
- 
+
 if (!function_exists("publicAsset")) {
     function publicAsset($path) {
         if (file_exists($path)) {
@@ -193,7 +222,7 @@ if(!function_exists('getLogProperties')) {
         }
 
         return readMoreLess("<pre>{$result}</pre>", $length,);
-        
+
     }
 }
 
@@ -207,6 +236,34 @@ if (!function_exists('getLogUser')) {
             return "No user found!";
         }
         return $data->value("name") ?? "";
+    }
+}
+
+if (!function_exists('getBrokerList')) {
+    function getBrokerList() {
+        return [
+            'UFTCL' => 'UFTCL'
+        ];
+    }
+}
+
+if (!function_exists('getEnvironemts')) {
+    function getEnvironemts() {
+        return [
+            'UAT' => 'UAT',
+            'UAT_PROD' => 'UAT_PROD',
+            'PROD' => 'PROD',
+        ];
+    }
+}
+
+if (!function_exists('getLogTypes')) {
+    function getLogTypes() {
+        return [
+            'ERR' => 'ERR',
+            'LOG' => 'LOG',
+            'MSG' => 'MSG',
+        ];
     }
 }
 
