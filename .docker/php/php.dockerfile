@@ -1,12 +1,6 @@
 # Use the official PHP image as the base image
 FROM php:8.2-fpm-alpine
-
-# Copy composer.lock and composer.json into the working directory
 COPY www/composer.json /var/www/html/
-
-# Set the working directory inside the container
-WORKDIR /var/www/html
-
 # Install dependencies for Alpine Linux
 RUN apk --no-cache add \
     build-base \
@@ -27,18 +21,20 @@ RUN apk --no-cache add \
     unzip \
     git \
     oniguruma-dev \
-    curl
+    curl \
+    postgresql-dev  # Add PostgreSQL client library
 
 # Clear cache
 RUN rm -rf /var/cache/apk/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd
+RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring zip exif pcntl
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Set the working directory inside the container
+WORKDIR /var/www/html
 
 # Copy existing application directory contents to the working directory
 COPY ./www/ /var/www/html
