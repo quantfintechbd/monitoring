@@ -267,3 +267,35 @@ if (!function_exists('getLogTypes')) {
     }
 }
 
+if (!function_exists('formatErrorMessage')) {
+    function formatErrorMessage($message) {
+        $response = [ 'title' => null, 'desc' => null, 'view_data' => null];
+        $decoded_message = json_decode($message, true);
+
+        if(isset($decoded_message['main_message']) && !empty($decoded_message['main_message'])) {
+            $details = is_array($decoded_message['main_message']) ? implode(', ', array_map(function ($key, $value) { return "$key=$value"; }, array_keys($decoded_message['main_message']), $decoded_message['main_message'])) : $decoded_message['main_message'];
+            $response['title'] = "Message: $details";
+            $decoded_message['main_message'] = $details;
+        }
+        if(isset($decoded_message['details']) && !empty($decoded_message['details'])) {
+            $details = is_array($decoded_message['details']) ? implode(', ', array_map(function ($key, $value) { return "$key=$value"; }, array_keys($decoded_message['details']), $decoded_message['details'])) : $decoded_message['details'];
+            $response['desc'] = "Details: $details";
+            $decoded_message['details'] = $details;
+        }
+        if(isset($decoded_message['exception']) && !empty($decoded_message['exception'])) {
+            $details = is_array($decoded_message['exception']) ? implode(', ', array_map(function ($key, $value) { return "$key=$value"; }, array_keys($decoded_message['exception']), $decoded_message['exception'])) : $decoded_message['exception'];
+            $response['title'] = "Exception: $details";
+            $decoded_message['exception'] = $details;
+        }
+        if(isset($decoded_message['source']) && !empty($decoded_message['source'])) {
+            $response['desc'] = "Source: ".$decoded_message['source'];
+        }
+
+        if(!empty($decoded_message)) {
+            $response['view_data'] = $decoded_message;
+        } else {
+            $response['title'] = $message;
+        }
+        return $response;
+    }
+}

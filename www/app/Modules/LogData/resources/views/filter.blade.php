@@ -15,6 +15,18 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group mb-2">
+                                {!! Form::label('date_from', 'Date From') !!}
+                                {{ Form::text('date_from', null, ['class' => 'form-control datepicker', 'id' => 'date_from', 'placeholder' => 'From Date', 'autocomplete' => 'off']) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-2">
+                                {!! Form::label('to_date', 'Date To') !!}
+                                {{ Form::text('to_date', null, ['class' => 'form-control datepicker', 'id' => 'to_date', 'placeholder' => 'From Date', 'autocomplete' => 'off']) }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-2">
                                 <div class="form-group mb-2">
                                     {!! Form::label('broker', 'Broker') !!}
                                     {!! Form::select('broker', getBrokerList(), null, ['class' => 'form-control select2', 'id' => 'broker', 'placeholder' => 'Select Broker']) !!}
@@ -39,18 +51,6 @@
                                 {!! Form::text('source', null, ['class' => 'form-control', 'id' => 'source']) !!}
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group mb-2">
-                                {!! Form::label('nid', 'NID') !!}
-                                {!! Form::text('nid', null, ['class' => 'form-control', 'id' => 'nid']) !!}
-                            </div>
-                        </div>
-                        {{-- <div class="col-md-3">
-                            <div class="form-group mb-2">
-                                {!! Form::label('status', 'Status') !!}
-                                {!! Form::select('status', $status, null, ['class' => 'form-control select2', 'id' => 'status', 'placeholder' => 'Select']) !!}
-                            </div>
-                        </div> --}}
                     </div>
                     <br/>
                     {!! Form::button('<i class="bi bi-search"></i> Filter', ['type' => 'submit', 'name' => '_filter', 'class' => 'btn btn-primary ']) !!}
