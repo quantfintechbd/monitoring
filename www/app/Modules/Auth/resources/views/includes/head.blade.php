@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title>{{ env("APP_NAME") ?? "UFTCL Bo Account" }} {{ !empty($pageName) ? " | {$pageName}" : null }}</title>
+<title>{{ env("APP_NAME") ?? "Monitoring System" }} {{ !empty($pageName) ? " | {$pageName}" : null }}</title>
 <meta charset="utf-8">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">

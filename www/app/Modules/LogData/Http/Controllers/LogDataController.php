@@ -10,6 +10,7 @@ use App\Modules\LogData\Services\LogDataService;
 class LogDataController extends Controller
 {
     private $logDataService;
+    private $pageName = "Application Log Data";
 
     public function __construct(LogDataService $logDataService)
     {
@@ -24,7 +25,8 @@ class LogDataController extends Controller
     {
         $logs = $this->logDataService->getAll($request);
         return view("LogData::index", [
-            'logs' => $logs
+            'logs' => $logs,
+            'pageName' => $this->pageName,
         ]);
     }
 }
