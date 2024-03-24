@@ -47,7 +47,7 @@
                             @if(!empty($logs))
                             @foreach($logs as $key=>$item)
                             @php
-                                $error_message = formatErrorMessage($item->json_data);
+                                $error_message = formatErrorMessage($item->json_data, $item->level);
                             @endphp
                             {{-- <tr class="{{ $item->level == 'ERR' ? 'border border-danger' : ''}}"> --}}
                             <tr>
@@ -89,12 +89,28 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <table class="table table-hover table-condensed w-100">
+                                                            <tr>
+                                                                <td class="text-start">Broker</td>
+                                                                <td class="text-start">{!! $item->broker ?? null !!}</td>
+                                                            </tr>
                                                             @foreach($error_message['view_data'] as $key => $data)
                                                                 <tr>
                                                                     <td class="text-start">{{ $key  }}</td>
                                                                     <td class="text-start">{!! (string) $data  !!}</td>
                                                                 </tr>
                                                             @endforeach
+                                                            <tr>
+                                                                <td class="text-start">Environment</td>
+                                                                <td class="text-start">{!! $item->envr ?? null !!}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-start">Source</td>
+                                                                <td class="text-start">{!! $item->source ?? null !!}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-start">Type</td>
+                                                                <td class="text-start">{!! $item->level ?? null !!}</td>
+                                                            </tr>
                                                             <tr>
                                                                 <td class="text-start">Date Time</td>
                                                                 <td class="text-start">{!! dbUTCToDateTime($item->date_time) ?? null !!}</td>
