@@ -250,6 +250,7 @@ if (!function_exists('getBrokerList')) {
 if (!function_exists('getEnvironemts')) {
     function getEnvironemts() {
         return [
+            'LOCAL' => 'LOCAL',
             'UAT' => 'UAT',
             'UAT_PROD' => 'UAT_PROD',
             'PROD' => 'PROD',
@@ -261,6 +262,7 @@ if (!function_exists('getLogTypes')) {
     function getLogTypes() {
         return [
             'ERR' => 'ERR',
+            'INFO' => 'INFO',
             'LOG' => 'LOG',
             'MSG' => 'MSG',
         ];
@@ -268,7 +270,7 @@ if (!function_exists('getLogTypes')) {
 }
 
 if (!function_exists('formatErrorMessage')) {
-    function formatErrorMessage($message) {
+    function formatErrorMessage($message, $message_type = "ERR") {
         $response = ['title' => null, 'desc' => null, 'view_data' => null];
         $decoded_message = json_decode($message, true);
 
@@ -286,7 +288,11 @@ if (!function_exists('formatErrorMessage')) {
 
         if (!empty($decoded_message['exception'])) {
             $exception = formatMessageValue($decoded_message['exception']);
-            $response['title'] = "Exception: $exception";
+            if($message_type == "ERR") {
+                $response['title'] = "Exception: $exception";
+            } else {
+                $response['title'] = $exception;
+            }
             $decoded_message['exception'] = $exception;
         }
 
