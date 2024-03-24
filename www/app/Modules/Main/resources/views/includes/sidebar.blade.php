@@ -60,17 +60,17 @@
                 @endcanany
 
                 {{-- Online BO Account --}}
-                {{-- @canany(['bo-user-list', 'bo-user-create', 'bo-user-update', 'bo-user-profile', 'bo-user-profile-edit', 'bo-account-holder', 'bo-bank-information', 'bo-authorize-information', 'bo-nominee-information', 'bo-document'])
+                @canany(['broker-application-log'])
                     <li>
                         <a href="#" class="has-arrow">
                             <i data-feather="briefcase"></i>
-                            <span data-key="t-bo-account">BO Accounts</span>
+                            <span data-key="t-bo-account">Application Log</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
-                            <li><a href="{{ route("bo-account.user") }}" data-key="t-user-pending">Pending Users</a></li>
+                            <li><a href="{{ route("broker-application-log") }}" data-key="t-user-pending">View Logs</a></li>
                         </ul>
                     </li>
-                @endcanany --}}
+                @endcanany
 
                 {{-- <li>
                     <a href="#" class="has-arrow">

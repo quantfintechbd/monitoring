@@ -8,7 +8,6 @@ Route::group([
     'module'     => 'LogData',
     'prefix'     => 'broker',
     'middleware' => ['web', 'auth'],
-    'as'         => 'broker-application-log.'
 ], function() {
     Route::get('application-log', 'LogDataController@index')
         // ->middleware("can:broker-application-log-list")
