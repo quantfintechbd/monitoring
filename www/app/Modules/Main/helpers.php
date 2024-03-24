@@ -321,3 +321,33 @@ function formatMessageValue($message) {
         ))
         : $message;
 }
+
+if (!function_exists('getOrderStatusBadge')) {
+    function getOrderStatusBadgeClass($text)
+    {
+        $badgeClass = '';
+        switch ($text) {
+            case 'ERR':
+            case 'PROD':
+                $badgeClass = 'danger';
+                break;
+            case 'INFO':
+                $badgeClass = 'info';
+                break;
+            case 'LOG':
+                $badgeClass = 'secondary';
+                break;
+            case 'MSG':
+                $badgeClass = 'success';
+                break;
+            case 'UAT':
+                $badgeClass = 'warning';
+                break;
+            default:
+                $badgeClass = 'secondary';
+                break;
+        }
+
+        return 'badge badge-soft-'.$badgeClass;
+    }
+}

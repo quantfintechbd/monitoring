@@ -58,10 +58,15 @@
                                     {{ $item->broker ?? null }}
                                 </td>
                                 <td>
-                                    {{ $item->envr ?? null }}
+                                    <span class="{{ getOrderStatusBadgeClass($item->envr) }}">
+                                        {{ $item->envr ?? null }}
+                                    </span>
                                 </td>
                                 <td>
-                                    {{ $item->level ?? null }}
+                                    {{-- <span class="badge bg-danger-subtle text-danger">{!! $item->level ?? null !!}</span> --}}
+                                    <span class="{{ getOrderStatusBadgeClass($item->level) }}">
+                                        {{ $item->level }}
+                                    </span>
                                 </td>
                                 <td>
                                     {{ $item->source ?? null }}
@@ -109,7 +114,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <td class="text-start">Type</td>
-                                                                <td class="text-start">{!! $item->level ?? null !!}</td>
+                                                                <td class="text-start">
+                                                                    {!! $item->level ?? null !!}
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <td class="text-start">Date Time</td>
